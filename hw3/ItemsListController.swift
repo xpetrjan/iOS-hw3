@@ -61,8 +61,8 @@ extension ItemsListController: UICollectionViewDataSource {
 
 extension ItemsListController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        items.remove(at: indexPath.item)
-        itemsCollectionView.reloadData()
+        self.items.remove(at: indexPath.item)
+        self.itemsCollectionView.reloadData()
     }
 }
 

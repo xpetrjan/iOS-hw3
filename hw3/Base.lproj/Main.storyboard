@@ -136,6 +136,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="woI-dL-Z2E"/>
                     </view>
+                    <connections>
+                        <outlet property="blueButton" destination="2uQ-sW-6qu" id="s2F-vB-cKQ"/>
+                        <outlet property="greenButton" destination="ggC-s1-gBj" id="olX-cj-oJ5"/>
+                        <outlet property="redButton" destination="2u9-d0-CH9" id="J9r-0j-XXy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uyV-Us-mji" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
