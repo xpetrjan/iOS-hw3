@@ -11,26 +11,18 @@ import Alamofire
 
 class AddItemViewController: UIViewController {
     weak var itemsListDelegate: ItemsListDelegate?
-    private var numberColor: UIColor = UIColor.init()
+
     @IBOutlet weak var redButton: UIButton!
     @IBOutlet weak var greenButton: UIButton!
     @IBOutlet weak var blueButton: UIButton!
     
-    private(set) var generatedNumber: String? {
-        didSet {
-            let numberItem = NumberItem(number: generatedNumber!, color: numberColor)
-            itemsListDelegate?.add(item: numberItem)
-            dismiss(animated: true)
-        }
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: {
             self.redButton.center = CGPoint(x: self.redButton.center.x - 100, y: self.redButton.center.y)
             self.greenButton.center = CGPoint(x: self.greenButton.center.x + 100, y: self.greenButton.center.y)
             self.blueButton.center = CGPoint(x: self.blueButton.center.x - 100, y: self.blueButton.center.y)
         }) { (finished) in
-            UIView.animate(withDuration: 1, animations: {
+            UIView.animate(withDuration: 1, delay: 0, options: [], animations: {
                 self.redButton.center = CGPoint(x: self.redButton.center.x + 100, y: self.redButton.center.y)
                 self.greenButton.center = CGPoint(x: self.greenButton.center.x - 100, y: self.greenButton.center.y)
                 self.blueButton.center = CGPoint(x: self.blueButton.center.x + 100, y: self.blueButton.center.y)
@@ -51,9 +43,6 @@ class AddItemViewController: UIViewController {
     }
     
     private func generate(color: UIColor, from: Int, to: Int) {
-        numberColor = color
-        requestNumber(from: from, to: to)
-        
         let activityIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
         self.view.addSubview(activityIndicatorView)
         activityIndicatorView.frame = self.view.frame
@@ -61,9 +50,11 @@ class AddItemViewController: UIViewController {
         activityIndicatorView.color = color
         activityIndicatorView.backgroundColor = UIColor.white
         activityIndicatorView.startAnimating()
+        
+        requestNumber(from: from, to: to, color: color)
     }
     
-    private func requestNumber(from: Int, to: Int) {
+    private func requestNumber(from: Int, to: Int, color: UIColor) {
         let requestString: String = "https://www.random.org/integers/?num=1&min=" + String(from) + "&max=" + String(to) + "&base=10&format=plain&col=1"
         
         AF.request(requestString).responseString { response in
@@ -72,7 +63,9 @@ class AddItemViewController: UIViewController {
                 if
                     let responseNumber = response.value
                 {
-                    self.generatedNumber = responseNumber
+                    let numberItem = NumberItem(number: responseNumber, color: color)
+                    self.itemsListDelegate?.add(item: numberItem)
+                    self.dismiss(animated: true)
                 }
             case .failure(let error):
                 print(error)
